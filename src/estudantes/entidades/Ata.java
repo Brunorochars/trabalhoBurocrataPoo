@@ -1,6 +1,7 @@
 package estudantes.entidades;
 
 public class Ata extends Documento {
+   
    private int numero;
    private String texto;
    private String [] presentes;
@@ -23,10 +24,6 @@ public class Ata extends Documento {
     return this.getPresentes();
    }
 
-   public String toString(){
-    return "Ata " + this.numero + ": " + this.texto + " Presentes: " + this.presentes.toString();
-}
-
    public int setNumero(int numero){
     return this.numero = numero;
    }
@@ -39,7 +36,7 @@ public class Ata extends Documento {
     return this.presentes = presentes;
    }
 
-    public boolean comparaDocumento(Ata ata){
+     public boolean comparaAta(Ata ata){
      if(this == ata){
           return true;
      }
