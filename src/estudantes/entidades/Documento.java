@@ -13,4 +13,10 @@ public abstract class Documento {
     private String criador;
     private CodigoCurso codigoCurso;
     private int paginas;
+
+    public Documento(String criador, CodigoCurso codigoCurso, int paginas){
+        this.criador = criador;
+        this.codigoCurso = codigoCurso;
+        this.paginas = paginas;
+    }
 }
