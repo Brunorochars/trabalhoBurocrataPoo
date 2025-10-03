@@ -12,11 +12,11 @@ public class Portaria extends Norma {
     public int getAnoInicio(){
         return this.anoInicio;
     }
-
     public int setAnoInicio(int anoInicio){
         return this.anoInicio = anoInicio;
     }
 
+    @Override
     public boolean equals(Object obj){
         
         if(this == obj){
@@ -31,5 +31,8 @@ public class Portaria extends Norma {
         Portaria other = (Portaria) obj;
         return this.anoInicio == other.anoInicio;
     }
-   
+    @Override
+    public int hashCode(){
+        return Objects.hash(super.hashCode(), anoInicio);
+    }
 }

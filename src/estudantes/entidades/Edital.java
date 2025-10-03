@@ -8,15 +8,14 @@ public class Edital extends Norma {
         super(numero, valido, texto);
         this.responsaveis = responsaveis;
     }
-
     public String[] getResponsaveis(){
         return this.responsaveis;
-    }
-    
+    }  
     public String[] setResponsaveis(String[] responsaveis){
         return this.responsaveis = responsaveis;
     }
 
+    @Override
     public boolean equals(Object obj){
 
         if(this == obj){
@@ -32,4 +31,8 @@ public class Edital extends Norma {
         return DocumentoUtils.arraysDeStringSaoIguais(this.responsaveis, other.responsaveis);
     }
     
+    @Override
+    public int hashCode(){
+        return Objects.hash(super.hashCode(), responsaveis);
+    }
 }

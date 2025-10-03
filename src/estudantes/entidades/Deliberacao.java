@@ -31,8 +31,11 @@ public class Deliberacao extends DocumentoAdministrativo {
             return false;
         }
         Deliberacao other = (Deliberacao) obj;
-
         return this.texto.equals(other.texto);
         
-     }    
+     } 
+    @Override  
+    public int hashCode(){
+        return Objects.hash(super.hashCode(), texto);
+    } 
 }

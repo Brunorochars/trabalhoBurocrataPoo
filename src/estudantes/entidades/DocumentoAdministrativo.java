@@ -7,6 +7,7 @@ public class DocumentoAdministrativo extends Documento{
 
     }
     
+    @Override
     public boolean equals(Object obj){
         
         if(this == obj){
@@ -19,8 +20,11 @@ public class DocumentoAdministrativo extends Documento{
             return false;
         }
         Deliberacao other = (Deliberacao) obj;
-        
         return this.super.equals(other);
+    }
+    @Override
+    public int hashCode(){
+        return Objects.hash(super.hashCode());
     }
 
 }

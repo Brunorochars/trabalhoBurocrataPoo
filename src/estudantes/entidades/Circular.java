@@ -16,7 +16,7 @@ public class Circular extends Deliberacao {
     public String[] setDestinatario(String[] destinatarios){
         return this.destinatarios = destinatarios;
     } 
-
+    @Override
     public boolean equals(Object obj){
         
         if(this == obj){
@@ -28,10 +28,12 @@ public class Circular extends Deliberacao {
         if(!(super.equals(obj))){
             return false;
         }
-
         Circular other = (Circular) obj;
-
         return DocumentoUtils.arraysDeStringSaoIguais(this.destinatarios, other.destinatarios);
+    }
+    @Override
+    public int hashCode(){
+        return Objects.hash(super.hashCode(), destinatarios);
     }
     
 }

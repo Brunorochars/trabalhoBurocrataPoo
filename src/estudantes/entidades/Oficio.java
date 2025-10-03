@@ -8,15 +8,15 @@ public class Oficio extends Deliberacao{
         super(texto);
         this.destinatario = destinatario;
     }
-
+    
     public String getDestinatario(){
         return this.destinatario;
     }
-
     public String setDestinatario(String destinatario){
         return this.destinatario = destinatario;
     }
 
+    @Override
     public boolean equals(Object obj){
         
         if(this == obj){
@@ -31,5 +31,9 @@ public class Oficio extends Deliberacao{
         Oficio other = (Oficio) obj;
         return this.destinatario.equals(other.destinatario);
     }
-    
+
+    @Override
+    public int hashCode(){
+        return Objects.hash(super.hashCode(), destinatario);
+    }
 }

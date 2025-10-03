@@ -35,8 +35,9 @@ public class Ata extends Documento {
    public String[] setPresentes(String[] presentes){
     return this.presentes = presentes;
    }
-
-     public boolean equals(Object obj){
+     @Override
+   public boolean equals(Object obj){
+     
      if(this == obj){
           return true;
      }
@@ -46,9 +47,13 @@ public class Ata extends Documento {
      if (!(super.equals(obj))){
           return false;
      } 
-     
      Ata other = (Ata) obj;
      return this.numero == other.numero && this.texto.equals(other.texto) && DocumentoUtils.arraysDeStringSaoIguais(this.presentes, other.presentes);
     }
+
+     @Override
+     public int hashCode(){
+          return Objects.hash(super.hashCode(), numero, texto);
+     }
 
 }
