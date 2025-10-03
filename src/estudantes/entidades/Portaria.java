@@ -18,14 +18,27 @@ public class Portaria extends Norma {
     }
 
     public boolean equals(Object obj){
+        
         if(this == obj){
             return true;
         }
         if(this.getClass() != obj.getClass()){
             return false;
         }
-        if(this.getTexto().equals(((Object) obj).getTexto()) && this.anoInicio == ((Object) obj).anoInicio){
-            return true;
+
+        Portaria other = (Portaria) obj;
+
+        if(this.getNumero() != other.getNumero()){
+            return false;
+        }
+        if(this.isValido() != other.isValido()){
+            return false;
+        }
+        if(this.getAnoInicio() != other.getAnoInicio()){
+            return false;
+        }
+        if(this.getTexto().equals(((Portaria) other).getTexto())){
+            return true
         } else {
             return false;
         }
