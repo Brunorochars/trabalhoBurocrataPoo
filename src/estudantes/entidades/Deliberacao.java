@@ -27,16 +27,12 @@ public class Deliberacao extends DocumentoAdministrativo {
         if(this.getClass() != obj.getClass()){
             return false;
         }
-
+        if(!(super.equals(obj))){
+            return false;
+        }
         Deliberacao other = (Deliberacao) obj;
 
-        if(this.paginas != other.paginas){
-            return false;
-        }
-        if(this.texto.equals(((Deliberacao) other).texto) && this.getCriador().equals(((Deliberacao) other).getCriador()) && this.codigoCurso.equals(((Deliberacao) other).codigoCurso)){
-            return true;
-        } else {
-            return false;
-        }
+        return this.texto.equals(other.texto);
+        
      }    
 }

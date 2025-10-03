@@ -25,22 +25,11 @@ public class Portaria extends Norma {
         if(this.getClass() != obj.getClass()){
             return false;
         }
-
+        if(!(super.equals(obj))){
+            return false;
+        }
         Portaria other = (Portaria) obj;
-
-        if(this.getNumero() != other.getNumero()){
-            return false;
-        }
-        if(this.isValido() != other.isValido()){
-            return false;
-        }
-        if(this.getAnoInicio() != other.getAnoInicio()){
-            return false;
-        }
-        if(this.getTexto().equals(((Portaria) other).getTexto())){
-            return true
-        } else {
-            return false;
-        }
+        return this.anoInicio == other.anoInicio;
     }
+   
 }

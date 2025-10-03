@@ -25,20 +25,11 @@ public class Edital extends Norma {
         if(this.getClass() != obj.getClass()){
             return false;
         }
-
+        if(!(super.equals(obj))){
+            return false;
+        }
         Edital other = (Edital) obj;
-
-        if(this.numero() != other.numero()){
-            return false;
-        }
-        if(this.isValido() != other.isValido()){
-            return false;
-        }
-        if(this.getTexto().equals(((Edital) other).getTexto()) && this.responsaveis.equals(((Edital) other).responsaveis)){
-            return true;
-        } else {
-            return false;
-        }
+        return DocumentoUtils.arraysDeStringSaoIguais(this.responsaveis, other.responsaveis);
     }
     
 }

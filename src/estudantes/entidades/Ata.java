@@ -43,17 +43,12 @@ public class Ata extends Documento {
      if(this.getClass() != obj.getClass()){
           return false;
      }
+     if (!(super.equals(obj))){
+          return false;
+     } 
      
      Ata other = (Ata) obj;
-
-     if(this.numero != other.numero){
-          return false;
-     }
-     if(this.texto.equals(((Object) obj).texto) && this.presentes.equals(((Object) obj).presentes)){
-          return true;
-     } else {
-          return false;
-     }
+     return this.numero == other.numero && this.texto.equals(other.texto) && DocumentoUtils.arraysDeStringSaoIguais(this.presentes, other.presentes);
     }
 
 }

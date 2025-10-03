@@ -18,20 +18,18 @@ public class Oficio extends Deliberacao{
     }
 
     public boolean equals(Object obj){
+        
         if(this == obj){
             return true;
         }
         if(this.getClass() != obj.getClass()){
             return false;
         }
-
-        Oficio other = (Oficio) obj;
-
-        if(this.getTexto().equals(((Oficio) other).getTexto()) && this.destinatario.equals(((Oficio) other).destinatario)){
-            return true;
-        } else {
+        if(!(super.equals(obj))){
             return false;
         }
+        Oficio other = (Oficio) obj;
+        return this.destinatario.equals(other.destinatario);
     }
     
 }

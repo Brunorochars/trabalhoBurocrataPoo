@@ -32,21 +32,11 @@ private String texto;
         if(this.getClass() != obj.getClass()){
             return false;
         }
-
+        if(!(super.equals(obj))){
+            return false;
+        }
         Norma other =  (Norma) obj;
-        
-        if(this.numero != other.numero){
-            return false;
-        }
-        if(this.isValido() != other.isValido()){
-            return false;
-        }
-
-        if(this.texto.equals(((Norma) other).texto)){
-            return true;
-        } else {
-            return false;
-        }
+        return this.numero == other.numero && this.valido == other.valido && this.texto.equals(other.texto);
     }
     
 }
