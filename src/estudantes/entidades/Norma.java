@@ -32,7 +32,17 @@ private String texto;
         if(this.getClass() != obj.getClass()){
             return false;
         }
-        if(this.numero == ((Object) obj).numero && this.valido == ((Object) obj).valido && this.texto.equals(((Object) obj).texto)){
+
+        Norma other =  (Norma) obj;
+        
+        if(this.numero != other.numero){
+            return false;
+        }
+        if(this.isValido() != other.isValido()){
+            return false;
+        }
+
+        if(this.texto.equals(((Norma) other).texto)){
             return true;
         } else {
             return false;

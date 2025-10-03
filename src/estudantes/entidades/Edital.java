@@ -18,13 +18,23 @@ public class Edital extends Norma {
     }
 
     public boolean equals(Object obj){
+
         if(this == obj){
             return true;
         }
         if(this.getClass() != obj.getClass()){
             return false;
         }
-        if(this.getTexto().equals(((Object) obj).getTexto()) && this.responsaveis.equals(((Object) obj).responsaveis)){
+
+        Edital other = (Edital) obj;
+
+        if(this.numero() != other.numero()){
+            return false;
+        }
+        if(this.isValido() != other.isValido()){
+            return false;
+        }
+        if(this.getTexto().equals(((Edital) other).getTexto()) && this.responsaveis.equals(((Edital) other).responsaveis)){
             return true;
         } else {
             return false;

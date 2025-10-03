@@ -25,6 +25,9 @@ public class Circular extends Deliberacao {
         if(this.getClass() != obj.getClass()){
             return false;
         }
+
+        Circular other = (Circular) obj;
+
         if(this.getTexto().equals(((Object) obj).getTexto()) && this.destinatarios.equals(((Object) obj).destinatarios)){
             return true;
         } else {

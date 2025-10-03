@@ -43,6 +43,12 @@ public class Ata extends Documento {
      if(this.getClass() != obj.getClass()){
           return false;
      }
+     
+     Ata other = (Ata) obj;
+
+     if(this.numero != other.numero){
+          return false;
+     }
      if(this.texto.equals(((Object) obj).texto) && this.presentes.equals(((Object) obj).presentes)){
           return true;
      } else {

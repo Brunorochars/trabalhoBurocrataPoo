@@ -24,7 +24,10 @@ public class Oficio extends Deliberacao{
         if(this.getClass() != obj.getClass()){
             return false;
         }
-        if(this.getTexto().equals(((Object) obj).getTexto()) && this.destinatario.equals(((Object) obj).destinatario)){
+
+        Oficio other = (Oficio) obj;
+
+        if(this.getTexto().equals(((Oficio) other).getTexto()) && this.destinatario.equals(((Oficio) other).destinatario)){
             return true;
         } else {
             return false;

@@ -14,7 +14,13 @@ public class DocumentoAdministrativo extends Documento{
         if(this.getClass() != obj.getClass()){
             return false;
         }
-        if(this.criador.equals(((Object) obj).criador) && this.codigoCurso.equals((Object) obj).codigoCurso && this.paginas == ((Object) obj).paginas){
+
+        Deliberacao other = (Deliberacao) obj;
+        
+        if(this.paginas != other.paginas){
+            return false;
+        }
+        if(this.criador.equals(((Object) obj).criador) && this.codigoCurso.equals((Object) obj).codigoCurso){
             return true;
         } else {
             return false;
