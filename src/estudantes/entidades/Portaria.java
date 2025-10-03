@@ -17,17 +17,14 @@ public class Portaria extends Norma {
         return this.anoInicio = anoInicio;
     }
 
-    public boolean comparaPortaria(Portaria portaria){
-        if(this == portaria){
+    public boolean equals(Object obj){
+        if(this == obj){
             return true;
         }
-        if(portaria == null){
+        if(this.getClass() != obj.getClass()){
             return false;
         }
-        if(this.getClass() != portaria.getClass()){
-            return false;
-        }
-        if(this.getTexto().equals(((Portaria) portaria).getTexto()) && this.anoInicio == ((Portaria) portaria).anoInicio){
+        if(this.getTexto().equals(((Object) obj).getTexto()) && this.anoInicio == ((Object) obj).anoInicio){
             return true;
         } else {
             return false;

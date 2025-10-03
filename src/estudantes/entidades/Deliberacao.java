@@ -19,18 +19,15 @@ public class Deliberacao extends DocumentoAdministrativo {
         return this.texto = texto;
     }
     
-    public boolean comparaDeliberacao(Deliberacao deliberacao){
+    public boolean equals(Object obj){
         
-        if(this == deliberacao){
+        if(this == obj){
             return true;
         }
-        if(deliberacao == null){
+        if(this.getClass() != obj.getClass()){
             return false;
         }
-        if(this.getClass() != deliberacao.getClass()){
-            return false;
-        }
-        if(this.texto.equals(((Deliberacao) deliberacao).texto)){
+        if(this.texto.equals(((Object) obj).texto)){
             return true;
         } else {
             return false;

@@ -24,18 +24,15 @@ private String texto;
         return this.texto;
     }
 
-    public boolean comparaNorma(Norma norma){
+    public boolean equals(Object obj){
 
-        if(this == norma){
+        if(this == obj){
             return true;
         }
-        if(norma == null){
+        if(this.getClass() != obj.getClass()){
             return false;
         }
-        if(this.getClass() != norma.getClass()){
-            return false;
-        }
-        if(this.numero == ((Norma) norma).numero && this.valido == ((Norma) norma).valido && this.texto.equals(((Norma) norma).texto)){
+        if(this.numero == ((Object) obj).numero && this.valido == ((Object) obj).valido && this.texto.equals(((Object) obj).texto)){
             return true;
         } else {
             return false;
