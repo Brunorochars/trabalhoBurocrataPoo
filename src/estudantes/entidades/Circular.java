@@ -17,18 +17,18 @@ public class Circular extends Deliberacao {
         return this.destinatarios = destinatarios;
     } 
 
-    public boolean comparaCircular(Circular circular){
+    public boolean equals(Object obj){
         
-        if(this == circular){
+        if(this == obj){
             return true;
         }
-        if(circular == null){
+        if(this.getClass() != obj.getClass()){
             return false;
         }
-        if(this.getClass() != circular.getClass()){
-            return false;
-        }
-        if(this.getTexto().equals(((Circular) circular).getTexto()) && this.destinatarios.equals(((Circular) circular).destinatarios)){
+
+        Circular other = (Circular) obj;
+
+        if(this.getTexto().equals(((Object) obj).getTexto()) && this.destinatarios.equals(((Object) obj).destinatarios)){
             return true;
         } else {
             return false;

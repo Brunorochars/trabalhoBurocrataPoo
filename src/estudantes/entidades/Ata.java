@@ -36,17 +36,20 @@ public class Ata extends Documento {
     return this.presentes = presentes;
    }
 
-     public boolean comparaAta(Ata ata){
-     if(this == ata){
+     public boolean equals(Object obj){
+     if(this == obj){
           return true;
      }
-     if(ata == null){
+     if(this.getClass() != obj.getClass()){
           return false;
      }
-     if(this.getClass() != ata.getClass()){
+     
+     Ata other = (Ata) obj;
+
+     if(this.numero != other.numero){
           return false;
      }
-     if(this.texto.equals(((Ata) ata).texto) && this.presentes.equals(((Ata) ata).presentes)){
+     if(this.texto.equals(((Object) obj).texto) && this.presentes.equals(((Object) obj).presentes)){
           return true;
      } else {
           return false;

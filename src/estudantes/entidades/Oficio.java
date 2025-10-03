@@ -17,17 +17,17 @@ public class Oficio extends Deliberacao{
         return this.destinatario = destinatario;
     }
 
-    public boolean comparaOficio(Oficio oficio){
-        if(this == oficio){
+    public boolean equals(Object obj){
+        if(this == obj){
             return true;
         }
-        if(oficio == null){
+        if(this.getClass() != obj.getClass()){
             return false;
         }
-        if(this.getClass() != oficio.getClass()){
-            return false;
-        }
-        if(this.getTexto().equals(((Oficio) oficio).getTexto()) && this.destinatario.equals(((Oficio) oficio).destinatario)){
+
+        Oficio other = (Oficio) obj;
+
+        if(this.getTexto().equals(((Oficio) other).getTexto()) && this.destinatario.equals(((Oficio) other).destinatario)){
             return true;
         } else {
             return false;

@@ -7,17 +7,20 @@ public class DocumentoAdministrativo extends Documento{
 
     }
     
-    public boolean comparaDocumento(DocumentoAdministrativo doc){
-        if(this == doc){
+    public boolean equals(Object obj){
+        if(this == obj){
             return true;
         }
-        if(doc == null){
+        if(this.getClass() != obj.getClass()){
             return false;
         }
-        if(this.getClass() != doc.getClass()){
+
+        Deliberacao other = (Deliberacao) obj;
+        
+        if(this.paginas != other.paginas){
             return false;
         }
-        if(this.criador.equals(((DocumentoAdministrativo) doc).criador) && this.codigoCurso.equals((DocumentoAdministrativo) doc).codigoCurso && this.paginas == ((DocumentoAdministrativo) doc).paginas){
+        if(this.criador.equals(((Object) obj).criador) && this.codigoCurso.equals((Object) obj).codigoCurso){
             return true;
         } else {
             return false;
