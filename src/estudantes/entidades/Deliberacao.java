@@ -2,12 +2,14 @@ package estudantes.entidades;
 
 import professor.entidades.CodigoCurso;
 
+import java.util.Objects;
+
 public class Deliberacao extends DocumentoAdministrativo {
 
     private String texto;
 
     public Deliberacao(String criador, CodigoCurso codigoCurso, int paginas, String texto){
-        super(criador, null, paginas);
+        super(criador, codigoCurso, paginas);
         this.texto = texto;
     }
 

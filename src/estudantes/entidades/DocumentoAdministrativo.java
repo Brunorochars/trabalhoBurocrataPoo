@@ -1,4 +1,6 @@
 package estudantes.entidades;
+import professor.entidades.CodigoCurso;
+import java.util.Objects;
 
 public class DocumentoAdministrativo extends Documento{
     
@@ -19,8 +21,8 @@ public class DocumentoAdministrativo extends Documento{
         if(!(super.equals(obj))){
             return false;
         }
-        Deliberacao other = (Deliberacao) obj;
-        return this.super.equals(other);
+        DocumentoAdministrativo other = (Deliberacao) obj;
+        return super.equals(other);
     }
     @Override
     public int hashCode(){

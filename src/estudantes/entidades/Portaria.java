@@ -1,11 +1,15 @@
 package estudantes.entidades;
 
+import professor.entidades.CodigoCurso;
+
+import java.util.Objects;
+
 public class Portaria extends Norma {
 
     private int anoInicio;  
 
-    public Portaria(int numero, boolean valido, String texto, int anoInicio){
-        super(numero, valido, texto);
+    public Portaria(String criador, CodigoCurso codigoCurso, int paginas, int numero, boolean valido, String texto, int anoInicio){
+        super(criador, codigoCurso, paginas, numero, valido, texto);
         this.anoInicio = anoInicio;
     }
 

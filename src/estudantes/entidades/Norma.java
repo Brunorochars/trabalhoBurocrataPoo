@@ -1,12 +1,17 @@
 package estudantes.entidades;
 
+import professor.entidades.CodigoCurso;
+
+import java.util.Objects;
+
 public class Norma extends DocumentoAdministrativo {
 
 private int numero;
 private boolean valido;
 private String texto;
 
-    public Norma(int numero, boolean valido, String texto){
+    public Norma(String criador, CodigoCurso codigoCurso, int paginas,int numero, boolean valido, String texto){
+        super(criador, codigoCurso, paginas);
         this.numero = numero;
         this.valido = valido;
         this.texto = texto;

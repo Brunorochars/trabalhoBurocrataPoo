@@ -1,11 +1,15 @@
 package estudantes.entidades;
 
+import professor.entidades.CodigoCurso;
+
+import java.util.Objects;
+
 public class Circular extends Deliberacao {
 
     private String[] destinatarios;
 
-    public Circular(String texto, String[] destinatarios){
-        super(texto);
+    public Circular(String criador, CodigoCurso codigoCurso, int paginas, String texto, String[] destinatarios){
+        super(criador, codigoCurso, paginas, texto);
         this.destinatarios = destinatarios;
     }
 
