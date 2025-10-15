@@ -20,6 +20,20 @@ public class Burocrata {
     private final Mesa mesa;
     private final Universidade universidade;
 
+    private static final List<String> logBuffer = new ArrayList<>();
+
+    static {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try (java.io.PrintWriter out = new java.io.PrintWriter(new java.io.BufferedWriter(new java.io.FileWriter("burocrata_log.txt")))) {
+                for (String message : logBuffer) {
+                    out.println(message);
+                }
+            } catch (java.io.IOException e) {
+                System.err.println("Falha ao gravar o buffer de log no arquivo: " + e.getMessage());
+            }
+        }));
+    }
+
     public Burocrata(Mesa m, Universidade u) {
         this.mesa = m;
         this.universidade = u;
@@ -81,10 +95,10 @@ public class Burocrata {
         boolean temDiploma = false;
         boolean temDocumentoNaoRelacionadoADiploma = false;
         String categoriaAtestadoUnica = null;
-        boolean atestadosIncompativeis = false; // Flag para o caso de conflito interno de atestados
+        boolean atestadosIncompativeis = false;
         int oficiosECircularesCount = 0;
         Set<String> destinatariosComuns = null;
-        boolean oficiosSemIntersecao = false; // Flag para o caso de ofícios sem destinatário comum
+        boolean oficiosSemIntersecao = false;
 
         /**
          * Construtor que calcula os metadados a partir de um processo existente.
@@ -168,64 +182,101 @@ public class Burocrata {
     /**
      * Validador otimizado que usa metadados para evitar loops,
      * garantindo 100% de equivalência com a lógica original.
+     * Inclui um método de diagnóstico para análise de falhas.
      */
     private static class ValidadorDeProcesso {
 
         public boolean ehAdicaoValida(ProcessoMetadata meta, Documento novoDoc) {
+            return getRazaoDeFalha(meta, novoDoc) == null;
+        }
+
+        public String getRazaoDeFalha(ProcessoMetadata meta, Documento novoDoc) {
+            String razao = null;
+
             // Regra 1: Páginas
-            if (meta.paginas + novoDoc.getPaginas() > 250) return false;
+            if (meta.paginas + novoDoc.getPaginas() > 250) {
+                razao = "Excede o limite de 250 páginas";
+            }
 
             // Regra 2: Mistura de Cursos
-            boolean novoEhPos = (novoDoc.getCodigoCurso() == CodigoCurso.POS_GRADUACAO_ENGENHARIA ||
-                                novoDoc.getCodigoCurso() == CodigoCurso.POS_GRADUACAO_ENGENHARIA_ELETRICA ||
-                                novoDoc.getCodigoCurso() == CodigoCurso.POS_GRADUACAO_ENGENHARIA_SOFTWARE);
-            if ((meta.temGraduacao && novoEhPos) || (meta.temPosGraduacao && !novoEhPos)) return false;
+            if (razao == null) {
+                boolean novoEhPos = (novoDoc.getCodigoCurso() == CodigoCurso.POS_GRADUACAO_ENGENHARIA ||
+                                    novoDoc.getCodigoCurso() == CodigoCurso.POS_GRADUACAO_ENGENHARIA_ELETRICA ||
+                                    novoDoc.getCodigoCurso() == CodigoCurso.POS_GRADUACAO_ENGENHARIA_SOFTWARE);
+                if ((meta.temGraduacao && novoEhPos) || (meta.temPosGraduacao && !novoEhPos)) {
+                    razao = "Viola regra de mistura de cursos (Graduação/Pós)";
+                }
+            }
 
             // Regra 3: Tipos de Documentos
-            boolean novoEhAdmin = novoDoc instanceof DocumentoAdministrativo;
-            boolean novoEhAcad = novoDoc instanceof DocumentoAcademico;
-            if ((meta.temAdmin && novoEhAcad) || (meta.temAcad && novoEhAdmin)) return false;
+            if (razao == null) {
+                boolean novoEhAdmin = novoDoc instanceof DocumentoAdministrativo;
+                boolean novoEhAcad = novoDoc instanceof DocumentoAcademico;
+                if ((meta.temAdmin && novoEhAcad) || (meta.temAcad && novoEhAdmin)) {
+                    razao = "Viola regra de mistura de tipos (Administrativo/Acadêmico)";
+                }
+            }
 
             // Regra 4: Documento Substancial (deve estar sozinho no processo)
-            boolean novoEhSubstancial = (novoDoc instanceof Edital || novoDoc instanceof Portaria) && novoDoc.getPaginas() >= 100 && ((Norma) novoDoc).getValido();
-            if ((novoEhSubstancial && meta.docCount > 0) || meta.temDocumentoSubstancial) return false;
+            if (razao == null) {
+                boolean novoEhSubstancial = (novoDoc instanceof Edital || novoDoc instanceof Portaria) && novoDoc.getPaginas() >= 100 && ((Norma) novoDoc).getValido();
+                if ((novoEhSubstancial && meta.docCount > 0) || meta.temDocumentoSubstancial) {
+                    razao = "Viola regra de documento substancial (deve estar sozinho)";
+                }
+            }
 
             // Regra 5: Diplomas (se houver, todos os docs devem ser Diploma, Certificado ou Ata)
-            boolean novoEhDiploma = novoDoc instanceof Diploma;
-            boolean novoEhRelacionadoADiploma = novoDoc instanceof Diploma || novoDoc instanceof Certificado || novoDoc instanceof Ata;
-            if ((meta.temDiploma && !novoEhRelacionadoADiploma) || (novoEhDiploma && meta.temDocumentoNaoRelacionadoADiploma)) return false;
+            if (razao == null) {
+                boolean novoEhDiploma = novoDoc instanceof Diploma;
+                boolean novoEhRelacionadoADiploma = novoDoc instanceof Diploma || novoDoc instanceof Certificado || novoDoc instanceof Ata;
+                if ((meta.temDiploma && !novoEhRelacionadoADiploma) || (novoEhDiploma && meta.temDocumentoNaoRelacionadoADiploma)) {
+                    razao = "Viola regra de Diplomas (documento incompatível adicionado a processo com diploma)";
+                }
+            }
 
             // Regra 6: Atestados (todos devem ter a mesma categoria, se não for nula)
-            if (meta.atestadosIncompativeis) return false;
-            if (novoDoc instanceof Atestado) {
-                String catNova = ((Atestado) novoDoc).getCategoria();
-                if (catNova != null && meta.categoriaAtestadoUnica != null && !meta.categoriaAtestadoUnica.equals(catNova)) {
-                    return false;
+            if (razao == null) {
+                if (meta.atestadosIncompativeis) {
+                    razao = "Viola regra de Atestados (categorias incompatíveis já existem no processo)";
+                } else if (novoDoc instanceof Atestado) {
+                    String catNova = ((Atestado) novoDoc).getCategoria();
+                    if (catNova != null && meta.categoriaAtestadoUnica != null && !meta.categoriaAtestadoUnica.equals(catNova)) {
+                        razao = "Viola regra de Atestados (nova categoria '" + catNova + "' é incompatível com a existente '" + meta.categoriaAtestadoUnica + "')";
+                    }
                 }
             }
 
             // Regra 7: Ofícios e Circulares (devem ter pelo menos um destinatário em comum)
-            if (meta.oficiosSemIntersecao) return false;
-            if (novoDoc instanceof Oficio || novoDoc instanceof Circular) {
-                if (meta.oficiosECircularesCount > 0 && meta.destinatariosComuns != null && !meta.destinatariosComuns.isEmpty()) {
-                    Set<String> destNovo = new HashSet<>();
-                    if (novoDoc instanceof Oficio) {
-                        Oficio oficio = (Oficio) novoDoc;
-                        if (oficio.getDestinatario() != null) destNovo.add(oficio.getDestinatario());
-                    } else {
-                        Circular circular = (Circular) novoDoc;
-                        if (circular.getDestinatarios() != null) destNovo.addAll(Arrays.asList(circular.getDestinatarios()));
-                    }
+            if (razao == null) {
+                if (meta.oficiosSemIntersecao) {
+                    razao = "Viola regra de Ofícios/Circulares (interseção de destinatários já é vazia no processo)";
+                } else if (novoDoc instanceof Oficio || novoDoc instanceof Circular) {
+                    if (meta.oficiosECircularesCount > 0 && meta.destinatariosComuns != null && !meta.destinatariosComuns.isEmpty()) {
+                        Set<String> destNovo = new HashSet<>();
+                        if (novoDoc instanceof Oficio) {
+                            Oficio oficio = (Oficio) novoDoc;
+                            if (oficio.getDestinatario() != null) destNovo.add(oficio.getDestinatario());
+                        } else {
+                            Circular circular = (Circular) novoDoc;
+                            if (circular.getDestinatarios() != null) destNovo.addAll(Arrays.asList(circular.getDestinatarios()));
+                        }
 
-                    if (!destNovo.isEmpty()) {
-                        Set<String> intersecao = new HashSet<>(meta.destinatariosComuns);
-                        intersecao.retainAll(destNovo);
-                        if (intersecao.isEmpty()) return false;
+                        if (!destNovo.isEmpty()) {
+                            Set<String> intersecao = new HashSet<>(meta.destinatariosComuns);
+                            intersecao.retainAll(destNovo);
+                            if (intersecao.isEmpty()) {
+                                razao = "Viola regra de Ofícios/Circulares (novo documento não compartilha destinatários)";
+                            }
+                        }
                     }
                 }
             }
 
-            return true;
+            if (razao != null) {
+                logBuffer.add(razao);
+            }
+
+            return razao;
         }
     }
 
@@ -253,16 +304,28 @@ public class Burocrata {
             Iterator<Documento> docIterator = documentosDisponiveis.iterator();
             while (docIterator.hasNext()) {
                 Documento doc = docIterator.next();
+                Processo melhorProcesso = null;
+                int maxPaginas = -1;
+
+                // Encontra o melhor processo (o mais cheio que ainda aceita o documento)
                 for (Processo processo : mesa.getProcessos()) {
                     if (processo == null) continue;
 
                     ProcessoMetadata meta = metadados.get(processo);
                     if (validador.ehAdicaoValida(meta, doc)) {
-                        processo.adicionarDocumento(doc);
-                        meta.atualizarCom(doc); // Atualiza o cache de metadados
-                        docIterator.remove();
-                        break;
+                        if (meta.paginas > maxPaginas) {
+                            maxPaginas = meta.paginas;
+                            melhorProcesso = processo;
+                        }
                     }
+                }
+
+                // Se um processo válido foi encontrado, adiciona o documento a ele
+                if (melhorProcesso != null) {
+                    ProcessoMetadata meta = metadados.get(melhorProcesso);
+                    melhorProcesso.adicionarDocumento(doc);
+                    meta.atualizarCom(doc); // Atualiza o cache de metadados
+                    docIterator.remove();
                 }
             }
         }
@@ -270,7 +333,7 @@ public class Burocrata {
         private void ordenarDocumentos() {
             documentosDisponiveis.sort(Comparator
                     .comparing(this::getPrioridadeTipoDocumento)
-                    .thenComparing(Documento::getPaginas, Comparator.reverseOrder()));
+                    .thenComparing(Documento::getPaginas));
         }
 
         private int getPrioridadeTipoDocumento(Documento doc) {
