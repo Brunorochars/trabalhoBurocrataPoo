@@ -1,3 +1,7 @@
+package estudantes.entidades;
+
+import professor.entidades.CodigoCurso;
+import java.util.Objects;
 /**
  * Representa um documento do tipo Ata de uma reunião ou evento,
  * que herda as propriedades básicas de um {@link Documento}.
