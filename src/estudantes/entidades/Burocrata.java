@@ -1,7 +1,6 @@
 package estudantes.entidades;
 
 import professor.entidades.*;
-
 import java.util.*;
 
 /**
@@ -14,14 +13,22 @@ import java.util.*;
  * nas regras e evitar estresse.
  *
  * @author Bruno da Silva Rocha, Frederico de Oliveira
+ * @version 2.0
+ * @see estudantes.entidades.Documento
+ * @see estudantes.entidades.DocumentoAcademico
+ * @see estudantes.entidades.DocumentoAdministrativo
+ * @see estudantes.entidades.Processo
+ * @see estudantes.entidades.Universidade
+ * @see estudantes.entidades.Mesa
+ * 
  */
 public class Burocrata {
     private int estresse = 0;
     private final Mesa mesa;
     private final Universidade universidade;
-
+    /** */
     private static final List<String> logBuffer = new ArrayList<>();
-
+    
     static {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try (java.io.PrintWriter out = new java.io.PrintWriter(new java.io.BufferedWriter(new java.io.FileWriter("burocrata_log.txt")))) {
@@ -33,12 +40,25 @@ public class Burocrata {
             }
         }));
     }
-
+    /**
+     * Construtor da classe Burocrata.
+     *
+     * @param m A mesa onde os processos são organizados.
+     * @param u A universidade que fornece os documentos e recebe os processos despachados.
+     */
     public Burocrata(Mesa m, Universidade u) {
         this.mesa = m;
         this.universidade = u;
     }
-
+    /**
+     * Executa o trabalho do burocrata, organizando documentos em processos
+     * e despachando-os para a universidade.
+     *
+     * <p>O método coleta todos os documentos disponíveis, tenta empacotá-los
+     * em processos válidos usando uma estratégia otimizada, e então despacha
+     * os processos completos para a universidade. Documentos que não puderam
+     * ser utilizados são devolvidos ao monte correspondente.</p>
+     */
     public void trabalhar() {
         List<Documento> documentosParaProcessar = new ArrayList<>();
         for (CodigoCurso codigo : CodigoCurso.values()) {
@@ -66,15 +86,23 @@ public class Burocrata {
             universidade.devolverDocumentoParaMonteDoCurso(doc, doc.getCodigoCurso());
         }
     }
-
+    /**
+     * Aumenta o nível de estresse do burocrata em 10 unidades.
+     */
     public void estressarMuito() {
         estresse += 10;
     }
-
+    /**
+     * Aumenta o nível de estresse do burocrata em 1 unidade.
+     */
     public void estressar() {
         estresse++;
     }
-
+    /**
+     * Retorna o nível atual de estresse do burocrata.
+     *
+     * @return O nível de estresse do burocrata.
+     */
     public int getEstresse() {
         return this.estresse;
     }
