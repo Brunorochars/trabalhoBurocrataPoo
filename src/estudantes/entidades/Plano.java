@@ -5,10 +5,9 @@ import java.util.Arrays;
 import java.util.Objects;
 /**
  * Representa um plano acadêmico, que herda as propriedades básicas de um {@link DocumentoAcademico}.
- * <p>Além das propriedades de um documento acadêmico (criador, código de curso, número de páginas e número de autenticação),
- * um Plano possui um responsável e um planejamento detalhado.</p>
+ * <p>Além das propriedades de um documento acadêmico, um Plano possui um responsável e um planejamento detalhado.</p>
  * @author [Bruno da Silva Rocha/Frederico de Oliveira]
- * @version 1.0
+ * @version 1.1
  * @see DocumentoAcademico 
  * @see professor.entidades.CodigoCurso
  */
@@ -18,7 +17,7 @@ public class Plano extends DocumentoAcademico{
     /**
      * Construtor da classe Plano.
      * @param criador O nome ou identificador do criador do documento.
-     * @param codigoCurso O código do curso ao qual o Plano está associada.
+     * @param codigoCurso O código do curso ao qual o Plano está associado.
      * @param paginas O número de páginas que o documento possui.
      * @param autenticacao O número de autenticação do Plano.
      * @param responsavel O nome do responsável pelo Plano.
@@ -30,29 +29,29 @@ public class Plano extends DocumentoAcademico{
         this.planejamento = planejamento;
     }
     /**
-     * Retorna o nome do responsável pelo Plano.
-     * @return
+     * Obtém o nome do responsável pelo Plano.
+     * @return A {@code String} com o nome do responsável.
      */
     public String getResponsavel() {
         return responsavel;
     }
     /**
-     * Define o nome do responsável pelo Plano.
-     * @param responsavel
+     * Altera o nome do responsável pelo Plano.
+     * @param responsavel O novo nome do responsável.
      */
     public void setResponsavel(String responsavel) {
         this.responsavel = responsavel;
     }
     /**
-     * Retorna a lista de atividades ou tópicos planejados no Plano.
-     * @return
+     * Obtém a lista de atividades ou tópicos planejados no Plano.
+     * @return Um array de {@code String} com o planejamento.
      */
     public String[] getPlanejamento() {
         return planejamento;
     }
     /**
-     * Define a lista de atividades ou tópicos planejados no Plano.
-     * @param planejamento
+     * Altera a lista de atividades ou tópicos planejados no Plano.
+     * @param planejamento O novo array de {@code String} do planejamento.
      */
     public void setPlanejamento(String[] planejamento) {
         this.planejamento = planejamento;
@@ -60,7 +59,7 @@ public class Plano extends DocumentoAcademico{
     /**
      * Verifica se este Plano é igual a outro objeto.
      * @param obj O objeto a ser comparado com este Plano.
-     * @return {@code true} se os objetos forem iguais; {@code false} caso contário.
+     * @return {@code true} se os objetos forem iguais; {@code false} caso contrário.
      */
     @Override
     public boolean equals(Object obj) {
@@ -84,5 +83,3 @@ public class Plano extends DocumentoAcademico{
         return Objects.hash(super.hashCode(), responsavel, Arrays.hashCode(planejamento));
     }
 }
-
-

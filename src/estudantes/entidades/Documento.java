@@ -9,7 +9,7 @@ import java.util.Objects;
  * <p>Um Documento possui propriedades básicas como criador, código de curso e número de páginas.</p>
  *
  * @author [Bruno da Silva Rocha/Frederico de Oliveira]
- * @version 1.0
+ * @version 1.1
  * @see professor.entidades.CodigoCurso
  */
 public abstract class Documento {
@@ -29,43 +29,43 @@ public abstract class Documento {
         this.paginas = paginas;
     }
     /**
-     * Retorna o código do curso ao qual o documento está associado.
-     * @return
+     * Obtém o código de curso associado a este documento.
+     * @return O enum {@link CodigoCurso} do curso.
      */
     public CodigoCurso getCodigoCurso() {
         return codigoCurso;
     }
     /**
-     * Define o código do curso ao qual o documento está associado.
-     * @param codigoCurso
+     * Altera o código de curso deste documento.
+     * @param codigoCurso O novo {@link CodigoCurso} a ser atribuído.
      */
     public void setCodigoCurso(CodigoCurso codigoCurso) {
         this.codigoCurso = codigoCurso;
     }
     /**
-     * Retorna o nome ou identificador do criador do documento.
-     * @return
+     * Obtém o nome do criador do documento.
+     * @return Uma {@code String} com o nome do criador.
      */
     public String getCriador() {
         return criador;
     }
     /**
-     * Define o nome ou identificador do criador do documento.
-     * @param criador
+     * Altera o nome do criador do documento.
+     * @param criador A nova {@code String} para o nome do criador.
      */
     public void setCriador(String criador) {
         this.criador = criador;
     }
     /**
-     * Retorna o número de páginas que o documento possui.
-     * @return
+     * Obtém a quantidade de páginas do documento.
+     * @return O número total de páginas.
      */
     public int getPaginas() {
         return paginas;
     }
     /**
-     * Define o número de páginas que o documento possui.
-     * @param paginas
+     * Altera a quantidade de páginas do documento.
+     * @param paginas O novo número total de páginas.
      */
     public void setPaginas(int paginas) {
         this.paginas = paginas;
@@ -74,7 +74,7 @@ public abstract class Documento {
      * Verifica se este Documento é igual a outro objeto.
      *
      * @param obj O objeto a ser comparado com este Documento.
-     * @return {@code true} se os objetos forem iguais; {@code false} caso contário.
+     * @return {@code true} se os objetos forem iguais; {@code false} caso contrário.
      */
     @Override
     public boolean equals(Object obj) {

@@ -5,11 +5,10 @@ import java.util.Objects;
 /**
  * Representa uma portaria, que herda as propriedades básicas de uma {@link Norma}.
  *
- * <p>Além das propriedades de uma norma (criador, código de curso, número de páginas, número da norma,
- * status de validade e texto descritivo), uma Portaria possui um ano de início.</p>
+ * <p>Além das propriedades de uma norma, uma Portaria possui um ano de início.</p>
  *
  * @author [Bruno da Silva Rocha/Frederico de Oliveira]
- * @version 1.0
+ * @version 1.1
  * @see Norma
  * @see professor.entidades.CodigoCurso
  */
@@ -25,31 +24,30 @@ public class Portaria extends Norma {
      * @param numero O número da Portaria.
      * @param valido Indica se a Portaria está atualmente válida ou não.
      * @param texto O conteúdo textual descritivo da Portaria.
-     * @param anoInicio O ano de início da Portaria.
+     * @param anoInicio O ano de início de vigência da Portaria.
      */
     public Portaria(String criador, CodigoCurso codigoCurso, int paginas, int numero, boolean valido, String texto, int anoInicio){
         super(criador, codigoCurso, paginas, numero, valido, texto);
         this.anoInicio = anoInicio;
     }
     /**
-     * Retorna o ano de início da Portaria.
-     * @return
+     * Obtém o ano de início de vigência da Portaria.
+     * @return O ano de início.
      */
     public int getAnoInicio(){
         return this.anoInicio;
     }
     /**
-     * Define o ano de início da Portaria.
-     * @param anoInicio
-     * @return
+     * Altera o ano de início de vigência da Portaria.
+     * @param anoInicio O novo ano de início.
      */
-    public int setAnoInicio(int anoInicio){
-        return this.anoInicio = anoInicio;
+    public void setAnoInicio(int anoInicio){
+        this.anoInicio = anoInicio;
     }
     /** 
      * Verifica se esta Portaria é igual a outro objeto.
      * @param obj O objeto a ser comparado com esta Portaria.
-     * @return {@code true} se os objetos forem iguais; {@code false} caso contário.    
+     * @return {@code true} se os objetos forem iguais; {@code false} caso contrário.    
      */
     @Override
     public boolean equals(Object obj){

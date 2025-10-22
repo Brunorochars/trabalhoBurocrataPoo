@@ -6,11 +6,10 @@ import java.util.Objects;
 /**
  * Representa um documento do tipo Norma, que herda as propriedades básicas de um {@link DocumentoAdministrativo}.
  *
- * <p>Além das propriedades de um documento administrativo (criador, código de curso e número de páginas),
- * uma Norma possui um número identificador, um status de validade e um texto descritivo.</p>
+ * <p>Além das propriedades de um documento administrativo, uma Norma possui um número identificador, um status de validade e um texto descritivo.</p>
  *
  * @author [Bruno da Silva Rocha/Frederico de Oliveira]
- * @version 1.0
+ * @version 1.1
  * @see DocumentoAdministrativo
  * @see professor.entidades.CodigoCurso
  */
@@ -36,22 +35,22 @@ private String texto;
         this.texto = texto;
     }
     /**
-     * Retorna o número da Norma.
-     * @return
+     * Obtém o número da Norma.
+     * @return O número identificador.
      */
     public int getNumero(){
         return this.numero;
     }
     /**
-     * Retorna o status de validade da Norma.
-     * @return
+     * Verifica o status de validade da Norma.
+     * @return {@code true} se a norma estiver válida; {@code false} caso contrário.
      */
     public boolean getValido(){
         return this.valido;
     }
     /**
-     * Retorna o conteúdo textual descritivo da Norma.
-     * @return
+     * Obtém o conteúdo textual descritivo da Norma.
+     * @return A {@code String} com o texto da norma.
      */
     public String getTexto(){
         return this.texto;
@@ -59,7 +58,7 @@ private String texto;
     /**
      * Verifica se esta Norma é igual a outro objeto.
      * @param obj O objeto a ser comparado com esta Norma.
-     * @return {@code true} se os objetos forem iguais; {@code false} caso contário.
+     * @return {@code true} se os objetos forem iguais; {@code false} caso contrário.
      */
     @Override
     public boolean equals(Object obj){

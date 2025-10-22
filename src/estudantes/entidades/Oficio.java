@@ -5,11 +5,10 @@ import java.util.Objects;
 /**
  * Representa um ofício, que herda as propriedades básicas de uma {@link Deliberacao}.
  *
- * <p>Além das propriedades de uma deliberação (criador, código de curso, número de páginas e texto descritivo),
- * um Ofício possui um destinatário específico.</p>
+ * <p>Além das propriedades de uma deliberação, um Ofício possui um destinatário específico.</p>
  *
  * @author [Bruno da Silva Rocha/Frederico de Oliveira]
- * @version 1.0
+ * @version 1.1
  * @see Deliberacao
  * @see professor.entidades.CodigoCurso
  */
@@ -20,7 +19,7 @@ public class Oficio extends Deliberacao{
      * Construtor da classe Oficio.
      *
      * @param criador O nome ou identificador do criador do documento.
-     * @param codigoCurso O código do curso ao qual o Ofício está associada.
+     * @param codigoCurso O código do curso ao qual o Ofício está associado.
      * @param paginas O número de páginas que o documento possui.
      * @param texto O conteúdo textual descritivo do Ofício.
      * @param destinatario O nome do destinatário do Ofício.
@@ -30,24 +29,23 @@ public class Oficio extends Deliberacao{
         this.destinatario = destinatario;
     }
     /**
-     * Retorna o nome do destinatário do Ofício.
-     * @return
+     * Obtém o nome do destinatário do Ofício.
+     * @return A {@code String} com o nome do destinatário.
      */ 
     public String getDestinatario(){
         return this.destinatario;
     }
     /**
-     * Define o nome do destinatário do Ofício.
-     * @param destinatario
-     * @return
+     * Altera o nome do destinatário do Ofício.
+     * @param destinatario O novo nome do destinatário.
      */
-    public String setDestinatario(String destinatario){
-        return this.destinatario = destinatario;
+    public void setDestinatario(String destinatario){
+        this.destinatario = destinatario;
     }
     /** 
      * Verifica se este Ofício é igual a outro objeto.
      * @param obj O objeto a ser comparado com este Ofício.
-     * @return {@code true} se os objetos forem iguais; {@code false} caso contário.    
+     * @return {@code true} se os objetos forem iguais; {@code false} caso contrário.    
      */
     @Override
     public boolean equals(Object obj){

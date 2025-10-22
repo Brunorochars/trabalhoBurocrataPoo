@@ -4,60 +4,47 @@ import professor.entidades.*;
 import java.util.*;
 
 /**
- * Classe que traz a lógica do algoritmo de organização e despacho de processos.
- * <br><br>
- * Revertido para uma estratégia estável e de estresse zero. A abordagem é
- * "document-centric first-fit": os documentos são ordenados por prioridade e tamanho,
- * e cada um é colocado no primeiro processo compatível encontrado. A validação
- * é feita inspecionando a lista real de documentos para garantir 100% de correção
- * nas regras e evitar estresse.
+ * Representa o Burocrata, responsável por organizar documentos em processos e despachá-los.
+ *
+ * <p>O Burocrata aplica uma estratégia de empacotamento para agrupar documentos
+ * de acordo com um conjunto de regras de negócio. Ele interage com a Mesa para
+ * acessar os processos e com a Universidade para obter os documentos e despachar
+ * os processos finalizados.</p>
  *
  * @author Bruno da Silva Rocha, Frederico de Oliveira
- * @version 2.0
- * @see estudantes.entidades.Documento
- * @see estudantes.entidades.DocumentoAcademico
- * @see estudantes.entidades.DocumentoAdministrativo
- * @see estudantes.entidades.Processo
- * @see estudantes.entidades.Universidade
- * @see estudantes.entidades.Mesa
- * 
+ * @version 3.0
+ * @see Mesa
+ * @see Universidade
+ * @see Processo
+ * @see Documento
  */
 public class Burocrata {
     private int estresse = 0;
     private final Mesa mesa;
     private final Universidade universidade;
-    /** */
-    private static final List<String> logBuffer = new ArrayList<>();
-    
-    static {
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            try (java.io.PrintWriter out = new java.io.PrintWriter(new java.io.BufferedWriter(new java.io.FileWriter("burocrata_log.txt")))) {
-                for (String message : logBuffer) {
-                    out.println(message);
-                }
-            } catch (java.io.IOException e) {
-                System.err.println("Falha ao gravar o buffer de log no arquivo: " + e.getMessage());
-            }
-        }));
-    }
+
     /**
      * Construtor da classe Burocrata.
      *
-     * @param m A mesa onde os processos são organizados.
-     * @param u A universidade que fornece os documentos e recebe os processos despachados.
+     * @param m A mesa de trabalho do burocrata, onde os processos são mantidos.
+     * @param u A instância da universidade, de onde os documentos são retirados e para onde os processos são enviados.
      */
     public Burocrata(Mesa m, Universidade u) {
         this.mesa = m;
         this.universidade = u;
     }
+
     /**
-     * Executa o trabalho do burocrata, organizando documentos em processos
-     * e despachando-os para a universidade.
+     * Executa o ciclo de trabalho principal do burocrata, orquestrando o processamento de documentos.
      *
-     * <p>O método coleta todos os documentos disponíveis, tenta empacotá-los
-     * em processos válidos usando uma estratégia otimizada, e então despacha
-     * os processos completos para a universidade. Documentos que não puderam
-     * ser utilizados são devolvidos ao monte correspondente.</p>
+     * <p>A operação é dividida em quatro etapas principais:</p>
+     * <ol>
+     *   <li><b>Coleta:</b> Todos os documentos de todos os montes de cursos na universidade são recolhidos para processamento.</li>
+     *   <li><b>Empacotamento:</b> Uma estratégia de empacotamento é utilizada para tentar alocar os documentos recolhidos nos processos vazios ou parcialmente preenchidos que estão na mesa, com base em um conjunto de regras de validação.</li>
+     *   <li><b>Despacho:</b> Após o empacotamento, todos os processos na mesa que contêm pelo menos um documento são despachados para a universidade para validação final.</li>
+     *   <li><b>Devolução:</b> Quaisquer documentos que não puderam ser alocados em nenhum processo durante a etapa de empacotamento são devolvidos aos seus montes de curso de origem.</li>
+     * </ol>
+     * <p>Este método representa um ciclo completo da lógica de negócio do burocrata.</p>
      */
     public void trabalhar() {
         List<Documento> documentosParaProcessar = new ArrayList<>();
@@ -86,132 +73,32 @@ public class Burocrata {
             universidade.devolverDocumentoParaMonteDoCurso(doc, doc.getCodigoCurso());
         }
     }
+
     /**
-     * Aumenta o nível de estresse do burocrata em 10 unidades.
+     * Aumenta o nível de estresse do burocrata em 10 pontos.
+     * <p>Este método é invocado em situações de erro grave no processamento.</p>
      */
     public void estressarMuito() {
         estresse += 10;
     }
+
     /**
-     * Aumenta o nível de estresse do burocrata em 1 unidade.
+     * Aumenta o nível de estresse do burocrata em 1 ponto.
+     * <p>Este método é invocado quando ocorrem erros leves ou inconsistências.</p>
      */
     public void estressar() {
         estresse++;
     }
+
     /**
-     * Retorna o nível atual de estresse do burocrata.
+     * Retorna o nível de estresse atual do burocrata.
      *
-     * @return O nível de estresse do burocrata.
+     * @return O valor inteiro do estresse acumulado.
      */
     public int getEstresse() {
         return this.estresse;
     }
 
-    /**
-     * Metadados de um processo para otimizar a validação de forma correta.
-     * Esta classe armazena o estado agregado de um processo para que as regras
-     * de validação possam ser checadas sem iterar sobre todos os documentos.
-     */
-    private static class ProcessoMetadata {
-        int paginas = 0;
-        int docCount = 0;
-        boolean temGraduacao = false;
-        boolean temPosGraduacao = false;
-        boolean temAdmin = false;
-        boolean temAcad = false;
-        boolean temDocumentoSubstancial = false;
-        boolean temDiploma = false;
-        boolean temDocumentoNaoRelacionadoADiploma = false;
-        String categoriaAtestadoUnica = null;
-        boolean atestadosIncompativeis = false;
-        int oficiosECircularesCount = 0;
-        Set<String> destinatariosComuns = null;
-        boolean oficiosSemIntersecao = false;
-
-        /**
-         * Construtor que calcula os metadados a partir de um processo existente.
-         */
-        ProcessoMetadata(Processo p) {
-            for (Documento doc : p.pegarCopiaDoProcesso()) {
-                this.atualizarCom(doc);
-            }
-        }
-
-        /**
-         * Atualiza os metadados com um novo documento.
-         */
-        void atualizarCom(Documento doc) {
-            this.paginas += doc.getPaginas();
-            this.docCount++;
-
-            // Regra de mistura de cursos
-            CodigoCurso codigo = doc.getCodigoCurso();
-            if (codigo == CodigoCurso.POS_GRADUACAO_ENGENHARIA ||
-                codigo == CodigoCurso.POS_GRADUACAO_ENGENHARIA_ELETRICA ||
-                codigo == CodigoCurso.POS_GRADUACAO_ENGENHARIA_SOFTWARE) {
-                this.temPosGraduacao = true;
-            } else {
-                this.temGraduacao = true;
-            }
-
-            // Regra de tipos de documentos
-            if (doc instanceof DocumentoAdministrativo) this.temAdmin = true;
-            if (doc instanceof DocumentoAcademico) this.temAcad = true;
-
-            // Regra de documento substancial
-            if ((doc instanceof Edital || doc instanceof Portaria) && doc.getPaginas() >= 100 && ((Norma) doc).getValido()) {
-                this.temDocumentoSubstancial = true;
-            }
-
-            // Regra de Diplomas
-            if (doc instanceof Diploma) this.temDiploma = true;
-            if (!(doc instanceof Diploma || doc instanceof Certificado || doc instanceof Ata)) {
-                this.temDocumentoNaoRelacionadoADiploma = true;
-            }
-
-            // Regra de Atestados
-            if (doc instanceof Atestado) {
-                String cat = ((Atestado) doc).getCategoria();
-                if (cat != null) {
-                    if (this.categoriaAtestadoUnica == null) {
-                        this.categoriaAtestadoUnica = cat;
-                    } else if (!this.categoriaAtestadoUnica.equals(cat)) {
-                        this.atestadosIncompativeis = true;
-                    }
-                }
-            }
-
-            // Regra de Ofícios e Circulares
-            if (doc instanceof Oficio || doc instanceof Circular) {
-                this.oficiosECircularesCount++;
-                if (this.oficiosSemIntersecao) return; // Se já falhou, não há o que fazer.
-
-                Set<String> destinatariosAtuais = new HashSet<>();
-                if (doc instanceof Oficio) {
-                    Oficio oficio = (Oficio) doc;
-                    if (oficio.getDestinatario() != null) destinatariosAtuais.add(oficio.getDestinatario());
-                } else {
-                    Circular circular = (Circular) doc;
-                    if (circular.getDestinatarios() != null) destinatariosAtuais.addAll(Arrays.asList(circular.getDestinatarios()));
-                }
-
-                if (this.destinatariosComuns == null) {
-                    this.destinatariosComuns = destinatariosAtuais;
-                } else if (!destinatariosAtuais.isEmpty()) {
-                    this.destinatariosComuns.retainAll(destinatariosAtuais);
-                    if (this.destinatariosComuns.isEmpty()) {
-                        this.oficiosSemIntersecao = true;
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Validador otimizado que usa metadados para evitar loops,
-     * garantindo 100% de equivalência com a lógica original.
-     * Inclui um método de diagnóstico para análise de falhas.
-     */
     private static class ValidadorDeProcesso {
 
         public boolean ehAdicaoValida(ProcessoMetadata meta, Documento novoDoc) {
@@ -221,12 +108,10 @@ public class Burocrata {
         public String getRazaoDeFalha(ProcessoMetadata meta, Documento novoDoc) {
             String razao = null;
 
-            // Regra 1: Páginas
             if (meta.paginas + novoDoc.getPaginas() > 250) {
                 razao = "Excede o limite de 250 páginas";
             }
 
-            // Regra 2: Mistura de Cursos
             if (razao == null) {
                 boolean novoEhPos = (novoDoc.getCodigoCurso() == CodigoCurso.POS_GRADUACAO_ENGENHARIA ||
                                     novoDoc.getCodigoCurso() == CodigoCurso.POS_GRADUACAO_ENGENHARIA_ELETRICA ||
@@ -236,7 +121,6 @@ public class Burocrata {
                 }
             }
 
-            // Regra 3: Tipos de Documentos
             if (razao == null) {
                 boolean novoEhAdmin = novoDoc instanceof DocumentoAdministrativo;
                 boolean novoEhAcad = novoDoc instanceof DocumentoAcademico;
@@ -245,7 +129,6 @@ public class Burocrata {
                 }
             }
 
-            // Regra 4: Documento Substancial (deve estar sozinho no processo)
             if (razao == null) {
                 boolean novoEhSubstancial = (novoDoc instanceof Edital || novoDoc instanceof Portaria) && novoDoc.getPaginas() >= 100 && ((Norma) novoDoc).getValido();
                 if ((novoEhSubstancial && meta.docCount > 0) || meta.temDocumentoSubstancial) {
@@ -253,7 +136,6 @@ public class Burocrata {
                 }
             }
 
-            // Regra 5: Diplomas (se houver, todos os docs devem ser Diploma, Certificado ou Ata)
             if (razao == null) {
                 boolean novoEhDiploma = novoDoc instanceof Diploma;
                 boolean novoEhRelacionadoADiploma = novoDoc instanceof Diploma || novoDoc instanceof Certificado || novoDoc instanceof Ata;
@@ -262,7 +144,6 @@ public class Burocrata {
                 }
             }
 
-            // Regra 6: Atestados (todos devem ter a mesma categoria, se não for nula)
             if (razao == null) {
                 if (meta.atestadosIncompativeis) {
                     razao = "Viola regra de Atestados (categorias incompatíveis já existem no processo)";
@@ -274,7 +155,6 @@ public class Burocrata {
                 }
             }
 
-            // Regra 7: Ofícios e Circulares (devem ter pelo menos um destinatário em comum)
             if (razao == null) {
                 if (meta.oficiosSemIntersecao) {
                     razao = "Viola regra de Ofícios/Circulares (interseção de destinatários já é vazia no processo)";
@@ -300,17 +180,10 @@ public class Burocrata {
                 }
             }
 
-            if (razao != null) {
-                logBuffer.add(razao);
-            }
-
             return razao;
         }
     }
 
-    /**
-     * Estratégia de empacotamento otimizada com cache de metadados.
-     */
     private class EstrategiaDeEmpacotamento {
         private final List<Documento> documentosDisponiveis;
         private final ValidadorDeProcesso validador = new ValidadorDeProcesso();
@@ -335,7 +208,6 @@ public class Burocrata {
                 Processo melhorProcesso = null;
                 int maxPaginas = -1;
 
-                // Encontra o melhor processo (o mais cheio que ainda aceita o documento)
                 for (Processo processo : mesa.getProcessos()) {
                     if (processo == null) continue;
 
@@ -348,11 +220,10 @@ public class Burocrata {
                     }
                 }
 
-                // Se um processo válido foi encontrado, adiciona o documento a ele
                 if (melhorProcesso != null) {
                     ProcessoMetadata meta = metadados.get(melhorProcesso);
                     melhorProcesso.adicionarDocumento(doc);
-                    meta.atualizarCom(doc); // Atualiza o cache de metadados
+                    meta.atualizarCom(doc);
                     docIterator.remove();
                 }
             }

@@ -5,11 +5,10 @@ import java.util.Objects;
 /**
  * Representa um documento do tipo Deliberação, que herda as propriedades básicas de um {@link DocumentoAdministrativo}.
  *
- * <p>Além das propriedades de um documento administrativo (criador, código de curso e número de páginas),
- * uma Deliberação possui um texto descritivo.</p>
+ * <p>Além das propriedades de um documento administrativo, uma Deliberação possui um texto descritivo.</p>
  *
  * @author [Bruno da Silva Rocha/Frederico de Oliveira]
- * @version 1.0
+ * @version 1.1
  * @see DocumentoAdministrativo
  * @see professor.entidades.CodigoCurso
  */
@@ -29,7 +28,7 @@ public class Deliberacao extends DocumentoAdministrativo {
         this.texto = texto;
     }
     /**
-    * Retorna o conteúdo textual descritivo desta Deliberação.
+    * Obtém o conteúdo textual descritivo desta Deliberação.
     *
     * @return O texto da Deliberação.
     */
@@ -37,17 +36,16 @@ public class Deliberacao extends DocumentoAdministrativo {
         return this.texto;
     }
     /**
-     * Define o conteúdo textual descritivo desta Deliberação.
-     * @param texto
-     * @return
+     * Altera o conteúdo textual descritivo desta Deliberação.
+     * @param texto O novo conteúdo para o texto da Deliberação.
      */
-    public String setTexto(String texto){
-        return this.texto = texto;
+    public void setTexto(String texto){
+        this.texto = texto;
     }
     /** 
      * Verifica se esta Deliberação é igual a outro objeto.
      * @param obj O objeto a ser comparado com esta Deliberação.
-     * @return {@code true} se os objetos forem iguais; {@code false} caso contário.    
+     * @return {@code true} se os objetos forem iguais; {@code false} caso contrário.    
      */
     @Override
     public boolean equals(Object obj){
