@@ -6,7 +6,7 @@ import java.util.Objects;
 /**
  * Representa um plano acadêmico, que herda as propriedades básicas de um {@link DocumentoAcademico}.
  * <p>Além das propriedades de um documento acadêmico, um Plano possui um responsável e um planejamento detalhado.</p>
- * @author [Bruno da Silva Rocha/Frederico de Oliveira]
+ * @author [Bruno da Silva Rocha/Frederico Marques da Silva Barcelos]
  * @version 1.1
  * @see DocumentoAcademico 
  * @see professor.entidades.CodigoCurso

@@ -8,7 +8,7 @@ import java.util.Objects;
  *
  * <p>Além das propriedades de um documento administrativo, uma Norma possui um número identificador, um status de validade e um texto descritivo.</p>
  *
- * @author [Bruno da Silva Rocha/Frederico de Oliveira]
+ * @author [Bruno da Silva Rocha/Frederico Marques da Silva Barcelos]
  * @version 1.1
  * @see DocumentoAdministrativo
  * @see professor.entidades.CodigoCurso

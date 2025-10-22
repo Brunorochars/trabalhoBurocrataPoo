@@ -7,7 +7,7 @@ import java.util.Objects;
  *
  * <p>Além das propriedades de uma norma, uma Portaria possui um ano de início.</p>
  *
- * @author [Bruno da Silva Rocha/Frederico de Oliveira]
+ * @author [Bruno da Silva Rocha/Frederico Marques da Silva Barcelos]
  * @version 1.1
  * @see Norma
  * @see professor.entidades.CodigoCurso

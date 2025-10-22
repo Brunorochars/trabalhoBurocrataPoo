@@ -8,7 +8,7 @@ import java.util.Objects;
  *
  * <p>Um Documento possui propriedades básicas como criador, código de curso e número de páginas.</p>
  *
- * @author [Bruno da Silva Rocha/Frederico de Oliveira]
+ * @author [Bruno da Silva Rocha/Frederico Marques da Silva Barcelos]
  * @version 1.1
  * @see professor.entidades.CodigoCurso
  */

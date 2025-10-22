@@ -4,7 +4,7 @@ package estudantes.entidades;
  *
  * <p>Esta classe fornece métodos estáticos que podem ser usados para operações comuns relacionadas a documentos.</p>
  *
- * @author [Bruno da Silva Rocha/Frederico de Oliveira]
+ * @author [Bruno da Silva Rocha/Frederico Marques da Silva Barcelos]
  * @version 1.0
  * @see estudantes.entidades.Documento
  * @see estudantes.entidades.DocumentoAcademico

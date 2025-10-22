@@ -8,7 +8,7 @@ import java.util.Objects;
  * <p>Além das propriedades de uma deliberação (criador, código de curso, número de páginas e texto),
  * uma Circular possui uma lista de destinatários.</p>
  *
- * @author [Bruno da Silva Rocha/Frederico de Oliveira]
+ * @author [Bruno da Silva Rocha/Frederico Marques da Silva Barcelos]
  * @version 1.0
  * @see Deliberacao
  * @see professor.entidades.CodigoCurso

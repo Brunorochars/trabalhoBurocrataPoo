@@ -7,7 +7,7 @@ import java.util.Objects;
  *
  * <p>Um DocumentoAdministrativo possui as mesmas propriedades de um documento genérico (criador, código de curso e número de páginas).</p>
  *
- * @author [Bruno da Silva Rocha/Frederico de Oliveira]
+ * @author [Bruno da Silva Rocha/Frederico Marques da Silva Barcelos]
  * @version 1.0
  * @see Documento
  * @see professor.entidades.CodigoCurso

@@ -8,7 +8,7 @@ import java.util.Objects;
  *
  * <p>Além das propriedades de um registro, um Histórico possui um coeficiente de rendimento e uma lista de componentes cursados.</p>
  *
- * @author [Bruno da Silva Rocha/Frederico de Oliveira]
+ * @author [Bruno da Silva Rocha/Frederico Marques da Silva Barcelos]
  * @version 1.1
  * @see Registro
  * @see professor.entidades.CodigoCurso

@@ -11,7 +11,7 @@ import java.util.*;
  * acessar os processos e com a Universidade para obter os documentos e despachar
  * os processos finalizados.</p>
  *
- * @author Bruno da Silva Rocha, Frederico de Oliveira
+ * @author Bruno da Silva Rocha, Frederico Marques da Silva Barcelos
  * @version 3.0
  * @see Mesa
  * @see Universidade
